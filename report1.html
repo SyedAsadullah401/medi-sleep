@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MediSleep - Sleep Report</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --primary: #0288D1;
@@ -219,7 +218,6 @@
     </div>
 
     <script>
-        const { jsPDF } = window.jspdf;
         const data = JSON.parse(localStorage.getItem('predictionData'));
         const predictionText = document.getElementById('predictionText');
         const predictionStatus = document.getElementById('predictionStatus');
@@ -297,37 +295,47 @@
         const report = generateReport();
 
         document.getElementById('downloadBtn').addEventListener('click', () => {
-            const doc = new jsPDF();
-            doc.setFontSize(18);
-            doc.setTextColor(2, 136, 209);
-            doc.text('MediSleep Sleep Disorder Report', 20, 20);
+            // Create the text content for the file
+            const textContent = `
+MediSleep Sleep Disorder Report
+==============================
+Generated: ${report.timestamp}
 
-            doc.setFontSize(12);
-            doc.setTextColor(13, 71, 161);
-            doc.text(`Generated: ${report.timestamp}`, 20, 30);
+Prediction
+----------
+${report.prediction}
+Status: ${report.status}
 
-            doc.setFontSize(14);
-            doc.setTextColor(0, 0, 0);
-            doc.text('Prediction', 20, 45);
-            doc.setFontSize(12);
-            doc.text(report.prediction, 20, 55, { maxWidth: 170 });
-            doc.setTextColor(report.status === 'Normal Sleep Pattern' ? '56, 142, 60' : report.status.includes('Risk') ? '255, 179, 0' : '216, 27, 96');
-            doc.text(`Status: ${report.status}`, 20, 75);
+Your Details
+------------
+Gender: ${report.gender}
+Age: ${report.age}
+Occupation: ${report.occupation}
+Sleep Duration: ${report.sleepDuration} hours
+Sleep Quality: ${report.sleepQuality}/10
+Physical Activity: ${report.physicalActivity} min/day
+Stress Level: ${report.stressLevel}/10
+BMI Category: ${report.bmi}
+            `.trim();
 
-            doc.setTextColor(0, 0, 0);
-            doc.setFontSize(14);
-            doc.text('Your Details', 20, 90);
-            doc.setFontSize(12);
-            doc.text('Gender: ${report.gender}', 20, 100);
-            doc.text('Age: ${report.age}', 20, 110);
-            doc.text('Occupation: ${report.occupation}', 20, 120);
-            doc.text('Sleep Duration: ${report.sleepDuration} hours', 20, 130);
-            doc.text('Sleep Quality: ${report.sleepQuality}/10', 20, 140);
-            doc.text('Physical Activity: ${report.physicalActivity} min/day', 20, 150);
-            doc.text('Stress Level: ${report.stressLevel}/10', 20, 160);
-            doc.text('BMI Category: ${report.bmi}', 20, 170);
-
-            doc.save('Msr.pdf');
+            // Create a Blob with the text content
+            const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+            
+            // Create a temporary URL for the Blob
+            const url = window.URL.createObjectURL(blob);
+            
+            // Create a temporary link element
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'MediSleep_Report.txt';
+            
+            // Programmatically click the link to trigger download
+            document.body.appendChild(link);
+            link.click();
+            
+            // Clean up
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
         });
     </script>
 </body>
