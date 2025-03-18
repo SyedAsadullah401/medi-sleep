@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact MediSleep</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+    <style>
+        :root {
+            --primary: #0288D1;
+            --secondary: #4FC3F7;
+            --bg-light: #F5F9FC;
+            --text-dark: #1A237E;
+            --text-light: #5C6BC0;
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(145deg, var(--bg-light), #E1F5FE, #BBDEFB);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-size: 200% 200%;
+            animation: bgShift 15s ease infinite;
+        }
+
+        @keyframes bgShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(225, 245, 254, 0.9));
+            padding: 1rem 2rem;
+            width: 100%;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(2, 136, 209, 0.2);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            text-shadow: 1px 1px 3px rgba(2, 136, 209, 0.2);
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50%;
+            height: 2px;
+            background: var(--secondary);
+            border-radius: 1px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav a:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 5px 15px rgba(2, 136, 209, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: white;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav a:hover::after {
+            width: 50%;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            padding: 30px;
+            margin: 30px auto;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .contact-box {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(245, 249, 252, 0.9));
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 700px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(2, 136, 209, 0.1);
+        }
+
+        .contact-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 40px;
+            height: 3px;
+            background: var(--secondary);
+            border-radius: 1px;
+            transform: translateX(-50%);
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        input, textarea {
+            padding: 10px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(2, 136, 209, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 2px 8px rgba(2, 136, 209, 0.2);
+            background: white;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(2, 136, 209, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #0277BD, #29B6F6);
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(2, 136, 209, 0.35);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .submit-btn:hover::before {
+            width: 200%;
+            height: 200%;
+        }
+
+        .back-btn {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(2, 136, 209, 0.25);
+            position: relative;
+            overflow: hidden;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, #0277BD, #29B6F6);
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(2, 136, 209, 0.35);
+        }
+
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .back-btn:hover::before {
+            width: 200%;
+            height: 200%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 15px auto;
+            }
+            .contact-box {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            p {
+                font-size: 0.9rem;
+            }
+            label {
+                font-size: 0.8rem;
+            }
+            input, textarea {
+                font-size: 0.8rem;
+                padding: 8px;
+            }
+            .submit-btn, .back-btn {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+            .nav a {
+                font-size: 0.9rem;
+                padding: 0.6rem 1rem;
+            }
+            .logo {
+                font-size: 1.5rem;
+            }
+            .header {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">MediSleep</div>
+            <nav class="nav">
+                <a href="dashboard1.html">Dashboard</a>
+                <a href="about.html">About</a>
+                <a href="contact1.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="contact-box">
+            <h1>Contact Us</h1>
+            <p>Get in touch with us for support, feedback, or inquiries.</p>
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+            <p style="margin-top: 20px;">Or reach us directly at: <strong>support@medisleep.com</strong> | <strong>1-800-MEDISLEEP</strong></p>
+            <a href="dashboard1.html" class="back-btn">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.querySelector('.contact-form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your message! We’ll get back to you soon.');
+            form.reset();
+        });
+    </script>
+</body>
+</html>

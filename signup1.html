@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSleep - Sign Up</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary: #1E88E5;
+            --secondary: #64B5F6;
+            --background: #F5F7FA;
+            --text: #263238;
+            --light-text: #607D8B;
+            --danger: #E53935;
+            --success: #43A047;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+        }
+
+        .auth-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #CFD8DC;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 5px rgba(30, 136, 229, 0.2);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        .password-strength {
+            display: flex;
+            align-items: center;
+            margin-top: 0.3rem;
+            font-size: 0.8rem;
+            color: var(--light-text);
+        }
+
+        .strength-meter {
+            display: flex;
+            gap: 0.3rem;
+            margin-left: 0.5rem;
+        }
+
+        .strength-meter span {
+            width: 20px;
+            height: 4px;
+            background: #CFD8DC;
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            background: #1565C0;
+        }
+
+        .spinner {
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 0.5rem;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .switch-form {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        .switch-form a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .switch-form a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h2 class="form-title">MediSleep Sign Up</h2>
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="signupName">Full Name</label>
+                <input type="text" id="signupName" required autocomplete="name">
+                <div class="error-message" id="nameError"></div>
+            </div>
+            <div class="form-group">
+                <label for="signupEmail">Email</label>
+                <input type="email" id="signupEmail" required autocomplete="email">
+                <div class="error-message" id="emailError"></div>
+            </div>
+            <div class="form-group">
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" required>
+                <div class="password-strength">
+                    Strength: <div class="strength-meter">
+                        <span id="meter-1"></span>
+                        <span id="meter-2"></span>
+                        <span id="meter-3"></span>
+                        <span id="meter-4"></span>
+                    </div>
+                </div>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" required>
+                <div class="error-message" id="confirmPasswordError"></div>
+            </div>
+            <button type="submit" class="btn">
+                <span class="spinner" id="signupSpinner"></span> Sign Up
+            </button>
+            <div class="switch-form">
+                Already have an account? <a href="login1.html">Login</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const signupForm = document.getElementById('signupForm');
+        const signupSpinner = document.getElementById('signupSpinner');
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const errors = {
+                name: document.getElementById('nameError'),
+                email: document.getElementById('emailError'),
+                password: document.getElementById('passwordError'),
+                confirm: document.getElementById('confirmPasswordError')
+            };
+            Object.values(errors).forEach(err => err.style.display = 'none');
+
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            let valid = true;
+
+            if (name.length < 3) {
+                errors.name.textContent = 'Name must be at least 3 characters';
+                errors.name.style.display = 'block';
+                valid = false;
+            }
+            if (!isValidEmail(email)) {
+                errors.email.textContent = 'Please enter a valid email';
+                errors.email.style.display = 'block';
+                valid = false;
+            }
+            if (password.length < 6) {
+                errors.password.textContent = 'Password must be at least 6 characters';
+                errors.password.style.display = 'block';
+                valid = false;
+            }
+            if (password !== confirmPassword) {
+                errors.confirm.textContent = 'Passwords do not match';
+                errors.confirm.style.display = 'block';
+                valid = false;
+            }
+
+            if (valid) {
+                signupSpinner.style.display = 'inline-block';
+                setTimeout(() => {
+                    localStorage.setItem('userData', JSON.stringify({ name, email, password }));
+                    signupSpinner.style.display = 'none';
+                    alert('Signup successful! Please login.');
+                    window.location.href = 'login1.html';
+                }, 1000);
+            }
+        });
+
+        document.getElementById('signupPassword').addEventListener('input', function(e) {
+            const password = e.target.value;
+            let strength = 0;
+            if (password.length >= 6) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password) || /[$@#&!]/.test(password)) strength++;
+
+            for (let i = 1; i <= 4; i++) {
+                const meter = document.getElementById(`meter-${i}`);
+                meter.style.background = i <= strength ? (strength === 1 ? '#E53935' : strength === 2 ? '#FBC02D' : strength === 3 ? '#43A047' : '#2E7D32') : '#CFD8DC';
+            }
+        });
+    </script>
+</body>
+</html>

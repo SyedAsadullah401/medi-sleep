@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About MediSleep</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+    <style>
+        :root {
+            --primary: #0288D1;
+            --secondary: #4FC3F7;
+            --bg-light: #F5F9FC;
+            --text-dark: #1A237E;
+            --text-light: #5C6BC0;
+            --shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(145deg, var(--bg-light), #E1F5FE, #BBDEFB);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-size: 200% 200%;
+            animation: bgShift 15s ease infinite;
+        }
+
+        @keyframes bgShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(225, 245, 254, 0.9));
+            padding: 2rem 4rem; /* Bigger padding */
+            width: 100%;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(2, 136, 209, 0.2); /* Decorative border */
+        }
+
+        .header-container {
+            max-width: 1800px; /* Wider header */
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2.5rem; /* Bigger logo */
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: -0.8px;
+            position: relative;
+            text-shadow: 2px 2px 5px rgba(2, 136, 209, 0.2);
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1.5rem; /* Bigger nav text */
+            font-weight: 600;
+            padding: 1.2rem 2.5rem; /* Larger padding */
+            border-radius: 35px;
+            transition: all 0.3s ease;
+            position: relative;
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav a:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 8px 20px rgba(2, 136, 209, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav a:hover::after {
+            width: 60%;
+        }
+
+        /* Main Content */
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            max-width: 1800px; /* Wider layout */
+            gap: 40px; /* Larger gap */
+            padding: 50px; /* More padding */
+            margin: 50px auto; /* More margin */
+            flex: 1;
+            align-items: center;
+        }
+
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 30px; /* Larger radius */
+            box-shadow: var(--shadow);
+            background: linear-gradient(135deg, #fff, #F5F9FC);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid rgba(2, 136, 209, 0.1); /* Decorative border */
+        }
+
+        .carousel-container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+        }
+
+        .carousel-images {
+            display: flex;
+            width: 300%;
+            height: 100%;
+            animation: slide 12s infinite ease-in-out;
+        }
+
+        .carousel-images img {
+            width: 33.33%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 30px;
+        }
+
+        .carousel-description {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            color: #fff;
+            padding: 25px; /* Larger padding */
+            text-align: center;
+            font-size: 1.3em; /* Bigger text */
+            font-weight: 400;
+            letter-spacing: 0.8px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .about-content {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(245, 249, 252, 0.9));
+            padding: 50px; /* Larger padding */
+            border-radius: 30px; /* Larger radius */
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid rgba(2, 136, 209, 0.1); /* Decorative border */
+        }
+
+        .about-content:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 3.2em; /* Bigger heading */
+            font-weight: 600;
+            margin-bottom: 25px;
+            letter-spacing: -0.8px;
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+            transform: translateX(-50%);
+        }
+
+        p {
+            font-size: 1.4em; /* Bigger text */
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .back-btn {
+            margin-top: 30px;
+            padding: 18px 40px; /* Larger button */
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 35px; /* Larger radius */
+            font-size: 1.4em; /* Bigger text */
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            align-self: center;
+            box-shadow: 0 8px 20px rgba(2, 136, 209, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, #0277BD, #29B6F6);
+            transform: scale(1.08);
+            box-shadow: 0 12px 25px rgba(2, 136, 209, 0.35);
+        }
+
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .back-btn:hover::before {
+            width: 200%;
+            height: 200%;
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            33% { transform: translateX(-33.33%); }
+            66% { transform: translateX(-66.66%); }
+            100% { transform: translateX(0); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 25px;
+                margin: 25px auto;
+            }
+            h1 {
+                font-size: 2.5em;
+            }
+            p {
+                font-size: 1.1em;
+            }
+            .about-content {
+                padding: 30px;
+            }
+            .carousel-description {
+                font-size: 1em;
+                padding: 15px;
+            }
+            .back-btn {
+                width: 100%;
+                padding: 15px;
+                font-size: 1.2em;
+            }
+            .nav a {
+                font-size: 1.2rem;
+                padding: 1rem 2rem;
+            }
+            .logo {
+                font-size: 2rem;
+            }
+            .header {
+                padding: 1.5rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">MediSleep</div>
+            <nav class="nav">
+                <a href="dashboard1.html">Dashboard</a>
+                <a href="about.html">About</a>
+                <a href="contact1.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="carousel-container">
+            <div class="carousel-images">
+                <img src="https://i.pinimg.com/736x/78/05/f3/7805f368edfb545de553ed190e742c28.jpg" alt="Sleep Well">
+                <img src="https://i.pinimg.com/736x/22/22/c3/2222c3bc685839d750a3f3e90b1ef2b3.jpg" alt="Track Sleep">
+                <img src="https://i.pinimg.com/736x/a0/0c/23/a00c23363bd4de5acffb51c8513e7078.jpg" alt="Healthy Life">
+            </div>
+            <div class="carousel-description" id="carouselDesc">Promoting sleep health</div>
+        </div>
+        <div class="about-content">
+            <div>
+                <h1>About MediSleep</h1>
+                <p>
+                    Sleep disorders disrupt restful sleep, affecting health and daily life. Common types include <strong>insomnia</strong> (trouble sleeping), <strong>sleep apnea</strong> (breathing interruptions), <strong>restless legs syndrome</strong>, <strong>narcolepsy</strong> (daytime sleepiness), <strong>circadian rhythm disorders</strong>, and <strong>parasomnias</strong> (e.g., sleepwalking). Symptoms like <strong>fatigue, irritability, and poor focus</strong> may stem from stress, medical conditions, or genetics. Treatments include <strong>lifestyle changes</strong>, <strong>therapy</strong>, <strong>medication</strong>, or devices like CPAP. Good sleep hygiene—regular schedules, less screen time, and a calm environment—boosts sleep quality. Untreated, risks include <strong>heart disease</strong> and <strong>diabetes</strong>. Consult a specialist for care.
+                </p>
+            </div>
+            <a href="dashboard1.html" class="back-btn">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        const descriptions = [
+            "Promoting sleep health",
+            "Advancing sleep research",
+            "Enhancing your wellness"
+        ];
+        let currentIndex = 0;
+        const descElement = document.getElementById('carouselDesc');
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % 3;
+            descElement.textContent = descriptions[currentIndex];
+        }, 4000);
+
+        // Match carousel height to content height
+        window.addEventListener('load', () => {
+            const contentHeight = document.querySelector('.about-content').offsetHeight;
+            document.querySelector('.carousel-container').style.height = `${contentHeight}px`;
+        });
+        window.addEventListener('resize', () => {
+            const contentHeight = document.querySelector('.about-content').offsetHeight;
+            document.querySelector('.carousel-container').style.height = `${contentHeight}px`;
+        });
+    </script>
+</body>
+</html>

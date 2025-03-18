@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSleep - Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary: #0277BD;
+            --secondary: #4FC3F7;
+            --background: #E1F5FE;
+            --text: #1A237E;
+            --light-text: #5C6BC0;
+            --danger: #C62828;
+            --success: #2E7D32;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --radius: 20px;
+            --transition: all 0.4s ease-in-out;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, var(--background), #BBDEFB, #90CAF9);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-attachment: fixed;
+        }
+
+        .header {
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.95), rgba(225, 245, 254, 0.9));
+            padding: 1.8rem 2.5rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(5px);
+        }
+
+        .header-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.8px;
+            text-shadow: 1px 1px 3px rgba(2, 119, 189, 0.2);
+        }
+
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-btn, .logout-btn {
+            padding: 0.9rem 1.8rem;
+            background: none;
+            border: 2px solid transparent;
+            font-size: 1.1rem;
+            color: var(--light-text);
+            cursor: pointer;
+            border-radius: 12px;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .nav-btn.active, .nav-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(2, 119, 189, 0.3);
+        }
+
+        .logout-btn {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: var(--danger);
+            color: white;
+            border-color: #EF5350;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 3.5rem 2.5rem;
+            max-width: 1300px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            transition: var(--transition);
+            backdrop-filter: blur(3px);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .card-text {
+            color: var(--light-text);
+            margin-bottom: 2.5rem;
+            font-size: 1.15rem;
+            line-height: 1.7;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-size: 1.1rem;
+            color: var(--text);
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-input {
+            padding: 1.2rem;
+            border: 2px solid #B0BEC5;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 10px rgba(2, 119, 189, 0.25);
+            background: white;
+        }
+
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .tooltip-icon {
+            width: 20px;
+            height: 20px;
+            stroke: var(--primary);
+            stroke-width: 2;
+            transition: var(--transition);
+        }
+
+        .tooltip:hover .tooltip-icon {
+            stroke: var(--secondary);
+            transform: scale(1.1);
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 240px;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 0.8rem;
+            border-radius: 10px;
+            position: absolute;
+            z-index: 1;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: var(--shadow);
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .btn {
+            padding: 1.2rem 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            box-shadow: 0 5px 15px rgba(2, 119, 189, 0.3);
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #01579B, #29B6F6);
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(2, 119, 189, 0.4);
+        }
+
+        .spinner {
+            width: 1.3rem;
+            height: 1.3rem;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .tab-content.hidden {
+            display: none;
+        }
+
+        /* Enhanced Speedometer Styles */
+        .color-meter-container {
+            position: relative;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to right, #C62828, #FFB300, #2E7D32);
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+            border: 2px solid #B0BEC5;
+        }
+
+        .color-meter-slider {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: transparent;
+            border: 3px solid var(--primary);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            cursor: grab;
+            transition: left 0.1s ease;
+        }
+
+        .color-meter-slider:active {
+            cursor: grabbing;
+            border-color: var(--secondary);
+        }
+
+        .color-meter-value {
+            display: none; /* Hidden input to store value */
+        }
+
+        .color-meter-container::before {
+            content: 'Low';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .color-meter-container::after {
+            content: 'High';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .nav-btn span {
+                display: none;
+            }
+            .card {
+                padding: 2rem;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .card-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">MediSleep</div>
+            <nav class="nav">
+                <button class="nav-btn active" data-tab="home">Home</button>
+                <button class="nav-btn" data-tab="about">About</button>
+                <button class="nav-btn" data-tab="contact">Contact</button>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section id="home-tab" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">Sleep Disorder Prediction</h2>
+                <p class="card-text">Enter your details to predict potential sleep disorders.</p>
+                <form id="predictionForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Gender
+                                <div class="tooltip">
+                                    <svg class="tooltip-icon" viewBox="0 0 24 24">
+                                        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm0-12v4m0 2h.01"/>
+                                    </svg>
+                                    <span class="tooltip-text">Your biological sex can influence sleep patterns and disorder risks.</span>
+                                </div>
+                            </label>
+                            <select class="form-input" id="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Age
+                                <div class="tooltip">
+                                    <svg class="tooltip-icon" viewBox="0 0 24 24">
+                                        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm0-12v4m0 2h.01"/>
+                                    </svg>
+                                    <span class="tooltip-text">Sleep patterns change with age, affecting disorder susceptibility.</span>
+                                </div>
+                            </label>
+                            <input type="number" id="age" min="0" max="120" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Occupation
+                                <div class="tooltip">
+                                    <svg class="tooltip-icon" viewBox="0 0 24 24">
+                                        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm0-12v4m0 2h.01"/>
+                                    </svg>
+                                    <span class="tooltip-text">Your work type can impact stress levels and sleep schedule regularity.</span>
+                                </div>
+                            </label>
+                            <select class="form-input" id="occupation" required>
+                                <option value="">Select Occupation</option>
+                                <option value="office">Office Worker</option>
+                                <option value="healthcare">Healthcare Professional</option>
+                                <option value="manual">Manual Labor</option>
+                                <option value="tech">Technology</option>
+                                <option value="education">Education</option>
+                                <option value="student">Student</option>
+                                <option value="retired">Retired</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Sleep Duration (hours)
+                                <div class="tooltip">
+                                    <svg class="tooltip-icon" viewBox="0 0 24 24">
+                                        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm0-12v4m0 2h.01"/>
+                                    </svg>
+                                    <span class="tooltip-text">Average hours of sleep per night. Adults typically need 7-9 hours.</span>
+                                </div>
+                            </label>
+                            <input type="number" id="sleep-duration" min="0" max="24" step="0.1" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Quality of Sleep 
+                                <div class="tooltip">
+                                    <svg class="tooltip-icon" viewBox="0 0 24 24">
+                                        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm0-12v4m0 2h.01"/>
+                                    </svg>
+                                    <span class="tooltip-text">Drag the slider: Red (Poor), Yellow (Medium), Green (Excellent) quality.</span>
+                                </div>
+                            </label>
+                            <div class="color-meter-container" id="sleepQualityMeter">
+                                <div class="color-meter-slider" id="sleepQualitySlider"></div>
+                                <input type="hidden" id="sleep-quality" class="color-meter-value" value="50">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Physical Activity (hours/day)
+                                <div class="tooltip">
+                                    <svg class="tooltip-icon" viewBox="0 0 24 24">
+                                        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm0-12v4m0 2h.01"/>
+                                    </svg>
+                                    <span class="tooltip-text">Average daily physical activity. 30+ minutes is recommended.</span>
+                                </div>
+                            </label>
+                            <input type="number" id="physical-activity" min="0" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Stress Level 
+                                <div class="tooltip">
+                                    <svg class="tooltip-icon" viewBox="0 0 24 24">
+                                        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm0-12v4m0 2h.01"/>
+                                    </svg>
+                                    <span class="tooltip-text">Drag the slider: Red (High), Yellow (Medium), Green (Low) stress.</span>
+                                </div>
+                            </label>
+                            <div class="color-meter-container" id="stressMeter">
+                                <div class="color-meter-slider" id="stressSlider"></div>
+                                <input type="hidden" id="stress-level" class="color-meter-value" value="50">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">BMI Category
+                                <div class="tooltip">
+                                    <svg class="tooltip-icon" viewBox="0 0 24 24">
+                                        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm0-12v4m0 2h.01"/>
+                                    </svg>
+                                    <span class="tooltip-text">Body Mass Index category affects sleep apnea risk.</span>
+                                </div>
+                            </label>
+                            <select class="form-input" id="bmi" required>
+                                <option value="">Select BMI Category</option>
+                                <option value="underweight">Underweight</option>
+                                <option value="normal">Normal</option>
+                                <option value="overweight">Overweight</option>
+                                <option value="obese">Obese</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn" id="predictBtn">
+                        <span class="spinner" id="predictSpinner"></span> Predict
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section id="about-tab" class="tab-content hidden">
+            <a href="about.html">About</a>
+        </section>
+
+        <section id="contact-tab" class="tab-content hidden">
+            <div class="card">
+                <h2 class="card-title">Contact Us</h2>
+                <p class="card-text">Get in touch with us for support or feedback.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const predictionForm = document.getElementById('predictionForm');
+        const predictSpinner = document.getElementById('predictSpinner');
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const tabs = document.querySelectorAll('.tab-content');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        // Stress Meter
+        const stressMeter = document.getElementById('stressMeter');
+        const stressSlider = document.getElementById('stressSlider');
+        const stressLevel = document.getElementById('stress-level');
+        
+        // Sleep Quality Meter
+        const sleepQualityMeter = document.getElementById('sleepQualityMeter');
+        const sleepQualitySlider = document.getElementById('sleepQualitySlider');
+        const sleepQuality = document.getElementById('sleep-quality');
+
+        navButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                if (tab === 'about') {
+                    window.location.href = 'about.html'; // Redirect to about.html
+                } else if (tab === 'contact') {
+                    window.location.href = 'contact1.html'; // Redirect to contact1.html
+                } else {
+                    // Handle Home tab as before
+                    navButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    tabs.forEach(t => t.classList.add('hidden'));
+                    document.getElementById(`${tab}-tab`).classList.remove('hidden');
+                }
+            });
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Generic function to handle meter interactions
+        function setupMeter(meter, slider, valueInput) {
+            let isDragging = false;
+            const meterWidth = meter.offsetWidth;
+
+            slider.style.left = '50%'; // Initial position (middle)
+
+            slider.addEventListener('mousedown', () => {
+                isDragging = true;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+
+                const rect = meter.getBoundingClientRect();
+                let newX = e.clientX - rect.left;
+
+                if (newX < 0) newX = 0;
+                if (newX > meterWidth) newX = meterWidth;
+
+                slider.style.left = `${newX}px`;
+                const value = Math.round((newX / meterWidth) * 100);
+                valueInput.value = value;
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            meter.addEventListener('click', (e) => {
+                const rect = meter.getBoundingClientRect();
+                let newX = e.clientX - rect.left;
+
+                if (newX < 0) newX = 0;
+                if (newX > meterWidth) newX = meterWidth;
+
+                slider.style.left = `${newX}px`;
+                const value = Math.round((newX / meterWidth) * 100);
+                valueInput.value = value;
+            });
+        }
+
+        // Setup both meters
+        setupMeter(stressMeter, stressSlider, stressLevel);
+        setupMeter(sleepQualityMeter, sleepQualitySlider, sleepQuality);
+
+        predictionForm.addEventListener('submit', e => {
+            e.preventDefault();
+            predictSpinner.style.display = 'inline-block';
+            document.getElementById('predictBtn').disabled = true;
+
+            const data = {
+                gender: document.getElementById('gender').value,
+                age: parseInt(document.getElementById('age').value),
+                occupation: document.getElementById('occupation').value,
+                sleepDuration: parseFloat(document.getElementById('sleep-duration').value),
+                sleepQuality: parseInt(sleepQuality.value), // Value from sleep quality meter (0-100)
+                physicalActivity: parseInt(document.getElementById('physical-activity').value),
+                stressLevel: parseInt(stressLevel.value), // Value from stress meter (0-100)
+                bmi: document.getElementById('bmi').value
+            };
+
+            setTimeout(() => {
+                predictSpinner.style.display = 'none';
+                document.getElementById('predictBtn').disabled = false;
+                localStorage.setItem('predictionData', JSON.stringify(data));
+                window.location.href = 'report1.html';
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
